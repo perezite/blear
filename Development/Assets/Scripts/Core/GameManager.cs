@@ -64,7 +64,10 @@ public class GameManager
             Handheld.SetActivityIndicatorStyle(AndroidActivityIndicatorStyle.Large);
         #endif
 
-        Handheld.StartActivityIndicator();
+		#if UNITY_IPHONE || UNITY_ANDROID
+			Handheld.StartActivityIndicator();
+		#endif 
+		
         yield return new WaitForSeconds(0);
         GoToLevel(sceneIndex);
     }

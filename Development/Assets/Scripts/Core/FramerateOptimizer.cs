@@ -19,6 +19,9 @@ public class FramerateOptimizer : MonoBehaviour
     // original maximum delta time
     private float originalMaximumDeltaTime;
 
+	// is the framerate optimizer enabled
+	private bool isEnabled = false;
+
     private void OnEnable()
     {
         originalFixedDeltaTime = Time.fixedDeltaTime;
@@ -27,12 +30,22 @@ public class FramerateOptimizer : MonoBehaviour
 
     private void OnDisable()
     {
-        Time.fixedDeltaTime = originalFixedDeltaTime;
-        Time.maximumDeltaTime = originalMaximumDeltaTime;
+		if (!isEnabled) 
+		{
+			return;
+		}
+				
+		Time.fixedDeltaTime = originalFixedDeltaTime;
+		Time.maximumDeltaTime = originalMaximumDeltaTime;
     }
 
     private void Start()
     {
+		if (!isEnabled) 
+		{
+			return;
+		}
+		
         previousDeltaTime = Time.deltaTime;
         smoothedDeltaTime = Time.deltaTime;
 
@@ -46,6 +59,11 @@ public class FramerateOptimizer : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+		if (!isEnabled) 
+		{
+			return;
+		}
+		
         // track
         smoothedDeltaTime += (Time.deltaTime - previousDeltaTime) * SmoothFactor;
         previousDeltaTime = Time.deltaTime;
